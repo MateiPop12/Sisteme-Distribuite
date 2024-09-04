@@ -1,2 +1,3 @@
 ***Sisteme Distribuite 2024-2025***
-![Diagram](Diagrams/UserMicroserviceEntityDiagram.drawio.png)
+##Entity Diagram
+![Diagram](UserMicroserviceEntityDiagram.drawio.png)
