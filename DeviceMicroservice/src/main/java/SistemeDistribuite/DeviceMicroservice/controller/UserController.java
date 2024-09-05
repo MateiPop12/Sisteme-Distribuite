@@ -1,0 +1,37 @@
+package SistemeDistribuite.DeviceMicroservice.controller;
+
+import SistemeDistribuite.DeviceMicroservice.data.entities.User;
+import SistemeDistribuite.DeviceMicroservice.service.interfaces.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.logging.Logger;
+
+@Controller
+@RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost4200")
+public class UserController {
+
+    private final Logger logger = Logger.getLogger(UserController.class.getName());
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<User> create(User user) {
+        logger.info("User created");
+        return ResponseEntity.ok(userService.create(user));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        logger.info("User deleted with id " + id);
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}

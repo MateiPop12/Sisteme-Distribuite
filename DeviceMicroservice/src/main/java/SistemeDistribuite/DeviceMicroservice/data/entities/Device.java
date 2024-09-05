@@ -1,11 +1,13 @@
 package SistemeDistribuite.DeviceMicroservice.data.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "devices")
 public class Device {
@@ -21,7 +23,7 @@ public class Device {
     private String address;
 
     @Column(name = "max_consumption", nullable = false, unique = true)
-    private int maxConsumption;
+    private double maxConsumption;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
