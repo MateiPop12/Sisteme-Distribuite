@@ -1,15 +1,15 @@
 package SistemeDistribuite.UserMicroservice.controller;
 
+import SistemeDistribuite.UserMicroservice.data.entities.User;
 import SistemeDistribuite.UserMicroservice.model.AuthenticationRequest;
 import SistemeDistribuite.UserMicroservice.model.AuthenticationResponse;
 import SistemeDistribuite.UserMicroservice.model.RegisterRequest;
 import SistemeDistribuite.UserMicroservice.service.interfaces.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
 

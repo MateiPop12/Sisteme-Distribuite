@@ -7,12 +7,15 @@ import SistemeDistribuite.UserMicroservice.data.repository.RoleRepository;
 import SistemeDistribuite.UserMicroservice.data.repository.UserRepository;
 import SistemeDistribuite.UserMicroservice.service.interfaces.UserService;
 import SistemeDistribuite.UserMicroservice.service.mappers.UserToUserDtoMapper;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,12 +24,18 @@ public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RabbitTemplate rabbitTemplate;
+    @Value("${rabbitmq.exchange}")
+    private String EXCHANGE_NAME;
+    @Value("${rabbitmq.routing-key}")
+    private String ROUTING_KEY;
 
     @Autowired
-    public UserServiceImplementation(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImplementation(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, RabbitTemplate rabbitTemplate) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Override
@@ -51,7 +60,11 @@ public class UserServiceImplementation implements UserService {
                 .orElseThrow(()->new UsernameNotFoundException("Role not found"))
         );
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        int userId = savedUser.getId();
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, userId);
+
+        return savedUser;
     }
 
     @Override
@@ -72,6 +85,7 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public void delete(int id) {
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, id * -1);
         userRepository.deleteById(id);
     }
 }

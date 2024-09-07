@@ -8,16 +8,16 @@ import SistemeDistribuite.UserMicroservice.data.repository.RoleRepository;
 import SistemeDistribuite.UserMicroservice.data.repository.UserRepository;
 import SistemeDistribuite.UserMicroservice.service.interfaces.AuthenticationService;
 import SistemeDistribuite.UserMicroservice.service.security.JwtService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 import java.util.NoSuchElementException;
-import java.util.logging.Logger;
 
 @Service
 public class AuthenticationServiceImplementation implements AuthenticationService {
@@ -27,14 +27,20 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final RabbitTemplate rabbitTemplate;
+    @Value("${rabbitmq.exchange}")
+    private String EXCHANGE_NAME;
+    @Value("${rabbitmq.routing-key}")
+    private String ROUTING_KEY;
 
     @Autowired
-    public AuthenticationServiceImplementation(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtService jwtService) {
+    public AuthenticationServiceImplementation(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtService jwtService, RabbitTemplate rabbitTemplate) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     public AuthenticationResponse register(RegisterRequest registerRequest) {
@@ -45,7 +51,9 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setRole(roleRepository.findByName("USER").orElseThrow(
                 () -> new NoSuchElementException("No role found")));
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        int userId = savedUser.getId();
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, userId);
 
         return new AuthenticationResponse(
                 jwtService.generateToken(user)
