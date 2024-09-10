@@ -1,0 +1,4 @@
+.user-create-card-container{
+  display: flex;
+  flex-direction: row;
+}

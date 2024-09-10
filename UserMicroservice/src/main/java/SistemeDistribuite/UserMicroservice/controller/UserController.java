@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://localhost4200")
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
     private final Logger logger = Logger.getLogger(UserController.class.getName());
     private final UserService userService;
@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserDto>> getAll() {
+    public ResponseEntity<List<UpdateUserDto>> getAll() {
         logger.info("Get all users");
         return ResponseEntity.ok(userService.getAll());
     }
@@ -43,9 +43,9 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<User> update(@RequestBody UpdateUserDto user) {
+    public ResponseEntity<User> update(@RequestBody UpdateUserDto updateUserDto) {
         logger.info("Update user called");
-        return ResponseEntity.ok(userService.update(user));
+        return ResponseEntity.ok(userService.update(updateUserDto));
     }
 
     @DeleteMapping("/{id}")

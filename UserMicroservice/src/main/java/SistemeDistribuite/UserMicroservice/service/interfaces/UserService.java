@@ -9,9 +9,9 @@ import java.util.List;
 
 @Component
 public interface UserService {
-    List<UserDto> getAll();
+    List<UpdateUserDto> getAll();
     UserDto getByUsername(String username);
     User create(UserDto userDto);
-    User update(UpdateUserDto userDto);
+    User update(UpdateUserDto updateUserDto);
     void delete(int id);
 }

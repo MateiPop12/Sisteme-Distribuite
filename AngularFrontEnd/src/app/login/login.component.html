@@ -1,0 +1,19 @@
+<div class="login-container">
+  <h2>{{ isRegisterMode ? 'Register' : 'Login' }}</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <input type="text" formControlName="username" placeholder="Username" [class.invalid]="loginForm.get('username')?.hasError('incorrect')">
+    <input type="password" formControlName="password" placeholder="Password" [class.invalid]="loginForm.get('password')?.hasError('incorrect')">
+    <input *ngIf="isRegisterMode" type="email" formControlName="email" placeholder="Email">
+    <button class="login-button" type="submit">
+      {{ isRegisterMode ? 'Register' : 'Login' }}
+    </button>
+    <a class="switch-link" (click)="toggleMode()">
+      {{ isRegisterMode ? 'Switch to Login' : 'Switch to Register' }}
+    </a>
+  </form>
+
+  <div *ngIf="loginError" class="error-message">
+    {{ loginError }}
+  </div>
+
+</div>

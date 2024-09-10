@@ -1,0 +1,11 @@
+<form class="user-card-container" (ngSubmit)="updateUser()">
+  <input type="text" placeholder="username" [(ngModel)]="user.username" name="username" required>
+  <input type="email" placeholder="email" [(ngModel)]="user.email" name="email" required>
+  <input type="text" placeholder="password" [(ngModel)]="user.password" name="password" required>
+  <role-selector [roles]="roles"
+                 [selectedRole]="selectedRole"
+                 (roleSelected)="onRoleSelected($event)">
+  </role-selector>
+  <button type="submit">Update</button>
+  <button type="button" (click)="deleteUser()">Delete</button>
+</form>

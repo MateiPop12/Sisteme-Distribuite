@@ -5,6 +5,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface UserService {
-    User create(User user);
+    User create(int id);
     void delete(int id);
 }

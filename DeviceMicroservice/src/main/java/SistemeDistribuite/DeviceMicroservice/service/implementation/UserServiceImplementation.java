@@ -19,10 +19,8 @@ public class UserServiceImplementation implements UserService {
 
     @RabbitListener(queues = {"${rabbitmq.queue}"})
     public void receiveMessage(int id) {
-        User user = new User();
         if(id>0){
-            user.setId(id);
-            create(user);
+            create(id);
         }else{
             id*=-1;
             delete(id);
@@ -30,7 +28,9 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User create(User user) {
+    public User create(int id) {
+        User user = new User();
+        user.setId(id);
         return userRepository.save(user);
     }
 

@@ -1,0 +1,49 @@
+body{
+  display: flex;
+  margin: 0;
+  justify-content: center;
+  background-image: url("assets/devices.jpg");
+  font-family: Arial,sans-serif;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+input {
+  padding: 8px;
+  width: 200px;
+  border: none;
+  border-radius: 10px;
+  margin: 5px;
+}
+
+input:focus{
+  outline: none;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  margin: 5px;
+}
+
+label{
+  margin: 5px;
+}
+
+select{
+  margin: 5px;
+}
+
+.center-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

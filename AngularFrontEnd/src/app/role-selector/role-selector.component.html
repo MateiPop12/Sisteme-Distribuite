@@ -1,0 +1,8 @@
+<label class="role-label">Role:</label>
+<select (change)="onRoleChange($event)" [value]="selectedRole?.name">
+  <option *ngFor="let role of roles"
+          [selected]="role.name === selectedRole?.name"
+          [value]="role.name">
+    {{role.name}}
+  </option>
+</select>

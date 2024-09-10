@@ -1,0 +1,8 @@
+<div class="center-container">
+  <login *ngIf="!isLoggedIn" (updateState)="updateState()"></login>
+  <admin-view *ngIf="isLoggedIn && isAdmin"></admin-view>
+<!--  <div *ngIf="isLoggedIn && !isAdmin">-->
+</div>
+
+
+

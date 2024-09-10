@@ -1,0 +1,14 @@
+<div class="admin-view-container">
+  <user-create-card
+    (userCreated)="reloadList()"
+    [roles]="roles">
+  </user-create-card>
+  <h1>User List</h1>
+  <div *ngFor="let user of users">
+    <user-card
+      (userListUpdated)="reloadList()"
+      [roles]="roles"
+      [user]="user">
+    </user-card>
+  </div>
+</div>

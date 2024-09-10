@@ -6,7 +6,9 @@ import SistemeDistribuite.UserMicroservice.model.UserDto;
 import SistemeDistribuite.UserMicroservice.data.repository.RoleRepository;
 import SistemeDistribuite.UserMicroservice.data.repository.UserRepository;
 import SistemeDistribuite.UserMicroservice.service.interfaces.UserService;
+import SistemeDistribuite.UserMicroservice.service.mappers.UserToUpdateUserDtoMapper;
 import SistemeDistribuite.UserMicroservice.service.mappers.UserToUserDtoMapper;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,8 +40,8 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public List<UserDto> getAll() {
-        return userRepository.findAll().stream().map(UserToUserDtoMapper::converter).collect(Collectors.toList());
+    public List<UpdateUserDto> getAll() {
+        return userRepository.findAll().stream().map(UserToUpdateUserDtoMapper::converter).collect(Collectors.toList());
     }
 
     @Override
@@ -62,7 +63,12 @@ public class UserServiceImplementation implements UserService {
 
         User savedUser = userRepository.save(user);
         int userId = savedUser.getId();
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, userId);
+        try {
+            rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, userId);
+        } catch (AmqpException e) {
+            userRepository.deleteById(userId);
+            throw new RuntimeException("Failed to send message to RabbitMQ. User has been rolled back.", e);
+        }
 
         return savedUser;
     }
@@ -72,7 +78,6 @@ public class UserServiceImplementation implements UserService {
         User newUser = userRepository.findById(updateUserDto.getId())
                 .orElseThrow(()->new UsernameNotFoundException("User not found")
                 );
-        newUser.setId(updateUserDto.getId());
         newUser.setUsername(updateUserDto.getUsername());
         newUser.setEmail(updateUserDto.getEmail());
         newUser.setPassword(passwordEncoder.encode(updateUserDto.getPassword()));
@@ -85,7 +90,11 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public void delete(int id) {
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, id * -1);
+        try {
+            rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, id * -1);
+        } catch (AmqpException e) {
+            throw new RuntimeException("Failed to send message to RabbitMQ. User has been rolled back.", e);
+        }
         userRepository.deleteById(id);
     }
 }
