@@ -13,5 +13,5 @@ public class DeviceDto {
     private String name;
     private String address;
     private double maxConsumption;
-    private User user;
+    private int userId;
 }

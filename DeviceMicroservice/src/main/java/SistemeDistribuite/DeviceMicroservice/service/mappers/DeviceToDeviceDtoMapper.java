@@ -10,7 +10,7 @@ public class DeviceToDeviceDtoMapper {
         deviceDto.setName(device.getName());
         deviceDto.setAddress(device.getAddress());
         deviceDto.setMaxConsumption(device.getMaxConsumption());
-        deviceDto.setUser(device.getUser());
+        deviceDto.setUserId(device.getUser().getId());
         return deviceDto;
     }
 }

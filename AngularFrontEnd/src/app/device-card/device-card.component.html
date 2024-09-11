@@ -1,0 +1,15 @@
+<form class="device-card-container">
+  <input type="text" placeholder="name" [(ngModel)]="device.name" name="name" required>
+  <input type="text" placeholder="address" [(ngModel)]="device.address" name="address" required>
+  <input type="number" placeholder="maxConsumption" [(ngModel)]="device.maxConsumption" name="maxConsumption">
+  <label>User:</label>
+  <select (change)="onUserChange($event)" required>
+    <option *ngFor="let user of users"
+            [selected]="user.id === device.userId"
+            [value]="user.username">
+      {{user.username}}
+    </option>
+  </select>
+  <button (click)="updateDevice()">Update</button>
+  <button (click)="deleteDevice()">Delete</button>
+</form>

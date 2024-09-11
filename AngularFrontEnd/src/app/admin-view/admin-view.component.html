@@ -1,14 +1,29 @@
 <div class="admin-view-container">
+  <h1>User Create</h1>
   <user-create-card
-    (userCreated)="reloadList()"
+    (userCreated)="reload()"
     [roles]="roles">
   </user-create-card>
   <h1>User List</h1>
   <div *ngFor="let user of users">
     <user-card
-      (userListUpdated)="reloadList()"
+      (userListUpdated)="reload()"
       [roles]="roles"
       [user]="user">
     </user-card>
   </div>
+  <h1>Device Create</h1>
+  <device-create-card
+    (deviceCreated)="reload()"
+    [users]="users">
+  </device-create-card>
+  <h1>Device List</h1>
+  <div *ngFor="let device of devices">
+    <device-card
+      (updateList)="reload()"
+      [device]="device"
+      [users]="users">
+    </device-card>
+  </div>
 </div>
+

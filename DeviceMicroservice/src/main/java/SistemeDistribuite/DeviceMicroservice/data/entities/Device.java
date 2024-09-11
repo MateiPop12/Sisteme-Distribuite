@@ -16,13 +16,13 @@ public class Device {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name", nullable = false, unique = true)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "address", nullable = false, unique = true)
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "max_consumption", nullable = false, unique = true)
+    @Column(name = "max_consumption")
     private double maxConsumption;
 
     @ManyToOne

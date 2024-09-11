@@ -1,4 +1,4 @@
-import {Component, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {UserCreateCardComponent} from "../user-create-card/user-create-card.component";
 import {UserCardComponent} from "../user-card/user-card.component";
 import {User} from "../../models/user";
@@ -7,6 +7,10 @@ import {NgForOf} from "@angular/common";
 import {Role} from "../../models/role";
 import {RoleService} from "../../services/role.service";
 import {FormsModule} from "@angular/forms";
+import {DeviceCreateCardComponent} from "../device-create-card/device-create-card.component";
+import {Device} from "../../models/device";
+import {DeviceService} from "../../services/device.service";
+import {DeviceCardComponent} from "../device-card/device-card.component";
 
 @Component({
   selector: 'admin-view',
@@ -15,7 +19,9 @@ import {FormsModule} from "@angular/forms";
     UserCreateCardComponent,
     UserCardComponent,
     NgForOf,
-    FormsModule
+    FormsModule,
+    DeviceCreateCardComponent,
+    DeviceCardComponent
   ],
   templateUrl: './admin-view.component.html',
   styleUrl: './admin-view.component.css'
@@ -24,13 +30,16 @@ export class AdminViewComponent implements OnInit{
 
   @Output() users: User[] = [];
   @Output() roles: Role[] = [];
+  @Output() devices: Device[] = [];
 
   constructor(private userService: UserService,
-              private roleService: RoleService) {}
+              private roleService: RoleService,
+              private deviceService: DeviceService) {}
 
   ngOnInit(): void {
     this.loadUsers();
     this.loadRoles();
+    this.loadDevices();
   }
 
   //----Loading Methods----//
@@ -48,9 +57,15 @@ export class AdminViewComponent implements OnInit{
     );
   }
 
-  //----Reloading Methods----//
-  reloadList(): void {
-    this.loadUsers();
+  loadDevices():void{
+    this.deviceService.getAllDevices().subscribe(
+      roles => this.devices = roles,
+      error => console.error('Error loading devices:', error)
+    )
   }
 
+  reload(): void {
+    this.loadUsers();
+    this.loadDevices();
+  }
 }

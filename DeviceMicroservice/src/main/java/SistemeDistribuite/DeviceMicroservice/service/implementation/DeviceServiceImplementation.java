@@ -36,10 +36,12 @@ public class DeviceServiceImplementation implements DeviceService {
     @Override
     public Device create(DeviceDto deviceDto) {
         Device device = new Device();
+        User user = new User();
+        user.setId(deviceDto.getUserId());
         device.setName(deviceDto.getName());
         device.setAddress(deviceDto.getAddress());
         device.setMaxConsumption(deviceDto.getMaxConsumption());
-        device.setUser(deviceDto.getUser());
+        device.setUser(user);
         return deviceRepository.save(device);
     }
 
@@ -48,11 +50,13 @@ public class DeviceServiceImplementation implements DeviceService {
         Device newDevice = deviceRepository.findById(deviceDto.getId())
                 .orElseThrow(()->new UsernameNotFoundException("Device not found")
         );
+        User user = new User();
+        user.setId(deviceDto.getUserId());
 
         newDevice.setName(deviceDto.getName());
         newDevice.setAddress(deviceDto.getAddress());
         newDevice.setMaxConsumption(deviceDto.getMaxConsumption());
-        newDevice.setUser(deviceDto.getUser());
+        newDevice.setUser(user);
         return deviceRepository.save(newDevice);
     }
 

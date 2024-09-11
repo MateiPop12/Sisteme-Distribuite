@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/device")
-@CrossOrigin(origins = "http://localhost4200")
+@CrossOrigin(origins = "http://localhost:4200")
 public class DeviceController {
 
     private final Logger logger = Logger.getLogger(DeviceController.class.getName());
