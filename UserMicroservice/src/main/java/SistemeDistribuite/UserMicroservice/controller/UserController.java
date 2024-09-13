@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<UserDto> getByUsername(@PathVariable String username) {
+    public ResponseEntity<UpdateUserDto> getByUsername(@PathVariable String username) {
         logger.info("Get by username called ");
         return ResponseEntity.ok(userService.getByUsername(username));
     }

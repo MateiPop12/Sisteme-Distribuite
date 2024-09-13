@@ -29,7 +29,9 @@ public class DeviceServiceImplementation implements DeviceService {
     }
 
     @Override
-    public List<DeviceDto> getByUserId(User user) {
+    public List<DeviceDto> getByUserId(Integer id) {
+        User user = new User();
+        user.setId(id);
         return deviceRepository.findDevicesByUser(user).stream().map(DeviceToDeviceDtoMapper::converter).collect(Collectors.toList());
     }
 

@@ -42,4 +42,7 @@ export class AuthService {
     return localStorage.getItem(this.tokenKey);
   }
 
+  logout(): void {
+    localStorage.removeItem(this.tokenKey);
+  }
 }

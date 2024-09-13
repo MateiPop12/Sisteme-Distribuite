@@ -3,7 +3,6 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AuthService} from "./auth.service";
 import {Observable} from "rxjs";
 import {Device} from "../models/device";
-import {User} from "../models/user";
 import {DeviceUser} from "../models/device-user";
 
 @Injectable({
@@ -28,8 +27,8 @@ export class DeviceService {
   }
 
   getDevicesByUser(user: DeviceUser): Observable<Device[]> {
-    const url = `${this.baseUrl}/all/user`;
-    return this.http.post<Device[]>(url, user, { headers: this.getAuthHeaders() });
+    const url = `${this.baseUrl}/all/${user.id}`;
+    return this.http.get<Device[]>(url);
   }
 
   createDevice(deviceDto: Device): Observable<Device> {

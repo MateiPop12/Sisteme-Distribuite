@@ -16,12 +16,12 @@ import {JwtHelperService} from "@auth0/angular-jwt";
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
+export class LoginComponent{
 
   isRegisterMode = false;
   loginForm: FormGroup;
   loginError: string | null = null;
-  @Output() updateState = new EventEmitter<void>();
+  @Output() updateState = new EventEmitter<string>();
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -74,7 +74,7 @@ export class LoginComponent {
         localStorage.setItem('authToken', token);
         localStorage.setItem('userRole', userRole);
 
-        this.updateState.emit();
+        this.updateState.emit(formData.username);
       },
       error: (error) => {
         console.error('Login failed', error);
@@ -95,7 +95,7 @@ export class LoginComponent {
       next: (response) => {
         console.log('Registration successful', response);
         this.loginError = null;
-        this.updateState.emit();
+        this.updateState.emit(formData.username);
       },
       error: (error) => {
         console.error('Registration failed', error);
@@ -108,5 +108,4 @@ export class LoginComponent {
     this.loginForm.get('username')?.setErrors({ incorrect: true });
     this.loginForm.get('password')?.setErrors({ incorrect: true });
   }
-
 }

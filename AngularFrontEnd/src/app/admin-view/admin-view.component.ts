@@ -11,6 +11,7 @@ import {DeviceCreateCardComponent} from "../device-create-card/device-create-car
 import {Device} from "../../models/device";
 import {DeviceService} from "../../services/device.service";
 import {DeviceCardComponent} from "../device-card/device-card.component";
+import {NavBarComponent} from "../nav-bar/nav-bar.component";
 
 @Component({
   selector: 'admin-view',
@@ -21,7 +22,8 @@ import {DeviceCardComponent} from "../device-card/device-card.component";
     NgForOf,
     FormsModule,
     DeviceCreateCardComponent,
-    DeviceCardComponent
+    DeviceCardComponent,
+    NavBarComponent
   ],
   templateUrl: './admin-view.component.html',
   styleUrl: './admin-view.component.css'

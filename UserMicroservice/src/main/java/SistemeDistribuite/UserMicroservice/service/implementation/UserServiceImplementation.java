@@ -45,8 +45,8 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public UserDto getByUsername(String username) {
-        return UserToUserDtoMapper.converter(userRepository.findByUsername(username)
+    public UpdateUserDto getByUsername(String username) {
+        return UserToUpdateUserDtoMapper.converter(userRepository.findByUsername(username)
                         .orElseThrow(()->new UsernameNotFoundException("User not found"))
         );
     }

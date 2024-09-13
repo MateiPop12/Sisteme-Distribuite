@@ -32,9 +32,9 @@ public class DeviceController {
     }
 
     @GetMapping("/all/user")
-    public ResponseEntity<List<DeviceDto>> getAllByUser(@RequestBody User user) {
+    public ResponseEntity<List<DeviceDto>> getAllByUser(@PathVariable Integer id) {
         logger.info("Get all devices by user");
-        return ResponseEntity.ok(deviceService.getByUserId(user));
+        return ResponseEntity.ok(deviceService.getByUserId(id));
     }
 
     @PostMapping("/create")
