@@ -1,0 +1,11 @@
+C:\Users\matei\Documents\FACULTATE\AnulIV\SD\CSV_Decoder\target\debug\deps\libserde_bytes_ng-6c6e7d621e863fb3.rmeta: C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\lib.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\bytes.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\de.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\ser.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\bytebuf.rs
+
+C:\Users\matei\Documents\FACULTATE\AnulIV\SD\CSV_Decoder\target\debug\deps\libserde_bytes_ng-6c6e7d621e863fb3.rlib: C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\lib.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\bytes.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\de.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\ser.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\bytebuf.rs
+
+C:\Users\matei\Documents\FACULTATE\AnulIV\SD\CSV_Decoder\target\debug\deps\serde_bytes_ng-6c6e7d621e863fb3.d: C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\lib.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\bytes.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\de.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\ser.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\bytebuf.rs
+
+C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\lib.rs:
+C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\bytes.rs:
+C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\de.rs:
+C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\ser.rs:
+C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\serde_bytes_ng-0.1.2\src\bytebuf.rs:

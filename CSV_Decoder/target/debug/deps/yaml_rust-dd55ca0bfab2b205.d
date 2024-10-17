@@ -1,0 +1,11 @@
+C:\Users\matei\Documents\FACULTATE\AnulIV\SD\CSV_Decoder\target\debug\deps\libyaml_rust-dd55ca0bfab2b205.rmeta: C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\lib.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\emitter.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\parser.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\scanner.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\yaml.rs
+
+C:\Users\matei\Documents\FACULTATE\AnulIV\SD\CSV_Decoder\target\debug\deps\libyaml_rust-dd55ca0bfab2b205.rlib: C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\lib.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\emitter.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\parser.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\scanner.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\yaml.rs
+
+C:\Users\matei\Documents\FACULTATE\AnulIV\SD\CSV_Decoder\target\debug\deps\yaml_rust-dd55ca0bfab2b205.d: C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\lib.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\emitter.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\parser.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\scanner.rs C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\yaml.rs
+
+C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\lib.rs:
+C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\emitter.rs:
+C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\parser.rs:
+C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\scanner.rs:
+C:\Users\matei\.cargo\registry\src\index.crates.io-6f17d22bba15001f\yaml-rust-0.4.5\src\yaml.rs:

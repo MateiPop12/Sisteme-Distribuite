@@ -17,7 +17,7 @@ public class UserServiceImplementation implements UserService {
         this.userRepository = userRepository;
     }
 
-    @RabbitListener(queues = {"${rabbitmq.queue}"})
+    @RabbitListener(queues = {"${rabbitmq.user.queue}"})
     public void receiveMessage(int id) {
         if(id>0){
             create(id);

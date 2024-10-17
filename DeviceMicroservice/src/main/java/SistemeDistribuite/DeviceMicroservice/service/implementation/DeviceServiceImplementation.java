@@ -6,7 +6,10 @@ import SistemeDistribuite.DeviceMicroservice.data.repository.DeviceRepository;
 import SistemeDistribuite.DeviceMicroservice.model.DeviceDto;
 import SistemeDistribuite.DeviceMicroservice.service.interfaces.DeviceService;
 import SistemeDistribuite.DeviceMicroservice.service.mappers.DeviceToDeviceDtoMapper;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +20,16 @@ import java.util.stream.Collectors;
 public class DeviceServiceImplementation implements DeviceService {
 
     private final DeviceRepository deviceRepository;
+    private final RabbitTemplate rabbitTemplate;
+    @Value("${rabbitmq.exchange}")
+    private String EXCHANGE_NAME;
+    @Value("${rabbitmq.device.routing-key}")
+    private String ROUTING_KEY;
 
     @Autowired
-    public DeviceServiceImplementation(DeviceRepository deviceRepository) {
+    public DeviceServiceImplementation(DeviceRepository deviceRepository, RabbitTemplate rabbitTemplate) {
         this.deviceRepository = deviceRepository;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @Override
@@ -44,7 +53,16 @@ public class DeviceServiceImplementation implements DeviceService {
         device.setAddress(deviceDto.getAddress());
         device.setMaxConsumption(deviceDto.getMaxConsumption());
         device.setUser(user);
-        return deviceRepository.save(device);
+
+        Device savedDevice = deviceRepository.save(device);
+        int deviceId = savedDevice.getId();
+        try {
+            rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, deviceId);
+        }catch (AmqpException e){
+            deviceRepository.deleteById(deviceId);
+            throw new RuntimeException("Failed to send message to RabbitMQ. Device has been rolled back.", e);
+        }
+        return savedDevice;
     }
 
     @Override
@@ -64,6 +82,11 @@ public class DeviceServiceImplementation implements DeviceService {
 
     @Override
     public void delete(int id) {
+        try{
+            rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, id*-1);
+        } catch (AmqpException e){
+            throw new RuntimeException("Failed to send message to RabbitMQ. Device has been rolled back.", e);
+        }
         deviceRepository.deleteById(id);
     }
 }
