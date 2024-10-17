@@ -1,0 +1,4 @@
+.device-card-user-container{
+  display: flex;
+  flex-direction: row;
+}

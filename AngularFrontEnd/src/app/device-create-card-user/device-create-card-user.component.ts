@@ -1,35 +1,48 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {User} from "../../models/user";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {RoleSelectorComponent} from "../role-selector/role-selector.component";
-import {Device} from "../../models/device";
 import {NgForOf} from "@angular/common";
+import {Device} from "../../models/device";
+import {User} from "../../models/user";
 import {DeviceService} from "../../services/device.service";
-
+import {UserService} from "../../services/user.service";
 
 @Component({
-  selector: 'device-create-card',
+  selector: 'device-create-card-user',
   standalone: true,
   imports: [
     FormsModule,
-    ReactiveFormsModule,
-    RoleSelectorComponent,
-    NgForOf
+    NgForOf,
+    ReactiveFormsModule
   ],
-  templateUrl: './device-create-card.component.html',
-  styleUrl: './device-create-card.component.css'
+  templateUrl: './device-create-card-user.component.html',
+  styleUrl: './device-create-card-user.component.css'
 })
-export class DeviceCreateCardComponent implements OnInit{
+export class DeviceCreateCardUserComponent implements OnInit{
 
-  @Input() users!: User[];
+  user: User = {id:0,username:"",email:'',password:'',role:""};
   device: Device = {id:0,name:'',address:'',maxConsumption:0,userId:1};
   @Output() deviceCreated = new EventEmitter<void>();
 
-  constructor(private deviceService: DeviceService,) {}
-  ngOnInit() {}
+  constructor(private deviceService: DeviceService,
+              private userService: UserService) {}
+  ngOnInit() {
+    this.getUser();
+  }
+
+  getUser(){
+    const username = sessionStorage.getItem('LoggedUser');
+    this.userService.getUserByUsername(username).subscribe({
+      next: (response) => {
+        this.user = response;
+      },
+      error: (error) => {
+        console.error('Error getting user id',error);
+      }
+    });
+  }
 
   createDevice(){
-    console.log("Create device",this.device);
+    this.device.userId = this.user.id;
     if(this.device.name&&this.device.address&&this.device.userId){
       this.deviceService.createDevice(this.device).subscribe(
         respone=>{
@@ -45,11 +58,6 @@ export class DeviceCreateCardComponent implements OnInit{
     else {
       console.log("All fields are required");
     }
-  }
-
-  onUserChange(event: any): void {
-    const selectedUser = event.target.value;
-    this.device.userId = this.users.find(user => user.username === selectedUser)?.id || 0;
   }
 
   private resetForm() {

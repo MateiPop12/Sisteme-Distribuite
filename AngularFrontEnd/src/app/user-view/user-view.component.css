@@ -1,0 +1,10 @@
+.user-view-container{
+  display: flex;
+  color:white;
+  background-color: rgba(0,0,0,.5);
+  margin-top: 50px;
+  padding: 30px;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+}

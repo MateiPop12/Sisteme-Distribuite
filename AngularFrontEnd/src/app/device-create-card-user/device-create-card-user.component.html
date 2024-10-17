@@ -1,0 +1,6 @@
+<form class="device-create-card-container-user" (ngSubmit)="createDevice()">
+  <input type="text" placeholder="name" [(ngModel)]="device.name" name="name" required>
+  <input type="text" placeholder="address" [(ngModel)]="device.address" name="address" required>
+  <input type="number" placeholder="maxConsumption" [(ngModel)]="device.maxConsumption" name="maxConsumption">
+  <button type="submit">Create</button>
+</form>

@@ -5,12 +5,20 @@ import {DeviceService} from "../../services/device.service";
 import {UserService} from "../../services/user.service";
 import {DeviceUser} from "../../models/device-user";
 import {User} from "../../models/user";
+import {DeviceCreateCardUserComponent} from "../device-create-card-user/device-create-card-user.component";
+import {DeviceCardComponent} from "../device-card/device-card.component";
+import {NgForOf} from "@angular/common";
+import {DeviceCardUserComponent} from "../device-card-user/device-card-user.component";
 
 @Component({
   selector: 'user-view',
   standalone: true,
   imports: [
-    NavBarComponent
+    NavBarComponent,
+    DeviceCreateCardUserComponent,
+    DeviceCardComponent,
+    NgForOf,
+    DeviceCardUserComponent
   ],
   templateUrl: './user-view.component.html',
   styleUrl: './user-view.component.css'
@@ -18,7 +26,7 @@ import {User} from "../../models/user";
 export class UserViewComponent implements OnInit{
 
   @Input() logUsername!: string;
-  user! : User;
+  @Output() user! : User;
   deviceUser : DeviceUser = {id:0};
   @Output() devices: Device[] = [];
 
@@ -28,27 +36,15 @@ export class UserViewComponent implements OnInit{
   ngOnInit() {
 
     this.getUser();
-
-    setTimeout(()=>{
-      console.log("getUser",this.user);
-    },100);
-
-    setTimeout(()=>{
-      console.log(this.logUsername);
-    },100);
-
     setTimeout(()=>{
       this.loadDevices();
     },100);
-
-    console.log(this.devices);
-
   }
 
   getUser(){
-    this.userService.getUserByUsername(this.logUsername).subscribe({
+    const username = sessionStorage.getItem('LoggedUser');
+    this.userService.getUserByUsername(username).subscribe({
       next: (response) => {
-        console.log(response);
         this.user = response;
       },
       error: (error) => {

@@ -42,6 +42,7 @@ export class AppComponent implements OnInit{
   updateState(username: string): void {
     this.checkUserRole();
     this.username = username;
+    sessionStorage.setItem('LoggedUser', username);
     console.log("App component",this.username);
   }
 }

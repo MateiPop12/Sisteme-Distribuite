@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -33,6 +34,13 @@ public class JwtService {
     }
 
     public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails) {
+        String role = userDetails.getAuthorities().stream()
+                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .findFirst()
+                .orElse(null);
+
+        extraClaims.put("role", role);
+
         return Jwts
                 .builder()
                 .setClaims(extraClaims)

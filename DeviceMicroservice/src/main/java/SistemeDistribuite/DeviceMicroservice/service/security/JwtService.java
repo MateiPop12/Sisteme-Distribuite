@@ -2,16 +2,12 @@ package SistemeDistribuite.DeviceMicroservice.service.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 @Service
@@ -28,19 +24,9 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
-    }
-
-    public String generateToken(Map<String,Object> extraClaims, UserDetails userDetails) {
-        return Jwts
-                .builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(getSigninKey(), SignatureAlgorithm.HS256)
-                .compact();
+    public String extractRole(String token) {
+        Claims claims = getClaimsFromToken(token);
+        return claims.get("role", String.class);
     }
 
     private Claims getClaimsFromToken(String token) {
@@ -52,9 +38,8 @@ public class JwtService {
                 .getBody();
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+    public boolean isTokenValid(String token) {
+        return !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

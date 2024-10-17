@@ -1,4 +1,14 @@
 <nav-bar></nav-bar>
-<div>
-
+<div class="user-view-container">
+  <h1>Device Create</h1>
+  <device-create-card-user
+  (deviceCreated)="loadDevices()">
+  </device-create-card-user>
+  <h1>Device List</h1>
+  <div *ngFor="let device of devices">
+    <device-card-user
+      (updateList)="loadDevices()"
+      [device]="device">
+    </device-card-user>
+  </div>
 </div>

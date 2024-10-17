@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+  frontend:
+    build: C:\Users\matei\Documents\FACULTATE\AnulIV\SD\AngularFrontEnd
+    ports:
+      - "4200:4200"
+    networks:
+      - my_network
+
+  users-service:
+    build: C:\Users\matei\Documents\FACULTATE\AnulIV\SD\UserMicroservice
+    ports:
+      - "8080:8080"
+    networks:
+      - my_network
+    environment:
+      POSTGRES_HOST: user_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgresServer1
+    depends_on:
+      - user_db
+
+  devices-service:
+    build: C:\Users\matei\Documents\FACULTATE\AnulIV\SD\DeviceMicroservice
+    ports:
+      - "8081:8081"
+    networks:
+      - my_network
+    environment:
+      POSTGRES_HOST: device_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgresServer1
+    depends_on:
+      - device_db
+
+  user_db:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: postgresServer1
+      POSTGRES_DB: user_db
+    volumes:
+      - user_db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - my_network
+
+  device_db:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: postgresServer1
+      POSTGRES_DB: device_db
+    volumes:
+      - device_db-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - my_network
+
+volumes:
+  user_db-data:
+  device_db-data:
+
+networks:
+  my_network:
+    driver: bridge
