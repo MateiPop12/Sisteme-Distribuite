@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     @Value("user_microservice_exchange")
-    private String EXCHANGE_NAME;
+    private String EXCHANGE;
 
     @Bean
     public TopicExchange exchange() {
-        return new TopicExchange(EXCHANGE_NAME);
+        return new TopicExchange(EXCHANGE);
     }
 }

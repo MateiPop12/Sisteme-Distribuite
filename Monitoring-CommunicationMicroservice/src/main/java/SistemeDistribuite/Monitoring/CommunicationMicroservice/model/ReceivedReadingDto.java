@@ -15,7 +15,7 @@ import java.time.format.DateTimeParseException;
 public class ReceivedReadingDto {
     private String timestamp;
     private Double value;
-    private int deviceId;
+    private int device_id;
 
     public Timestamp convert(String timestamp) {
         try {
@@ -30,4 +30,13 @@ public class ReceivedReadingDto {
             throw new IllegalArgumentException("Invalid timestamp format", e);
         }
     }
+    @Override
+    public String toString() {
+        return "ReceivedReadingDto{" +
+                "timestamp='" + timestamp + '\'' +
+                ", measurement_value=" + value +
+                ", deviceId=" + device_id +
+                '}';
+    }
+
 }

@@ -5,6 +5,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface DeviceService {
-    Device createDevice(int id);
-    void deleteDevice(int id);
+    Device create(int id);
+    void delete(int id);
 }

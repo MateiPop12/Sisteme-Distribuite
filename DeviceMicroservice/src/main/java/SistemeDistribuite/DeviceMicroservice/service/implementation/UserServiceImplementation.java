@@ -7,6 +7,9 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserServiceImplementation implements UserService {
 
@@ -17,7 +20,7 @@ public class UserServiceImplementation implements UserService {
         this.userRepository = userRepository;
     }
 
-    @RabbitListener(queues = {"${rabbitmq.user.queue}"})
+    @RabbitListener(queues = "${rabbitmq.user.queue}")
     public void receiveMessage(int id) {
         if(id>0){
             create(id);
@@ -25,6 +28,11 @@ public class UserServiceImplementation implements UserService {
             id*=-1;
             delete(id);
         }
+    }
+
+    @Override
+    public List<User> all() {
+        return new ArrayList<>(userRepository.findAll());
     }
 
     @Override

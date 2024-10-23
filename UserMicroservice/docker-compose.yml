@@ -1,15 +1,13 @@
-version: '3'
-
 services:
   frontend:
-    build: C:\Users\matei\Documents\FACULTATE\AnulIV\SD\AngularFrontEnd
+    build: D:\FACULTATE\AnulIV\SD
     ports:
       - "4200:4200"
     networks:
       - my_network
 
   users-service:
-    build: C:\Users\matei\Documents\FACULTATE\AnulIV\SD\UserMicroservice
+    build: D:\FACULTATE\AnulIV\SD
     ports:
       - "8080:8080"
     networks:
@@ -22,7 +20,7 @@ services:
       - user_db
 
   devices-service:
-    build: C:\Users\matei\Documents\FACULTATE\AnulIV\SD\DeviceMicroservice
+    build: D:\FACULTATE\AnulIV\SD
     ports:
       - "8081:8081"
     networks:
@@ -33,6 +31,14 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgresServer1
     depends_on:
       - device_db
+
+  rabbitmq:
+    image: rabbitmq:3.13.7-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - my_network
 
   user_db:
     image: postgres:latest

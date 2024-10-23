@@ -3,6 +3,7 @@ package SistemeDistribuite.Monitoring.CommunicationMicroservice.service.implemen
 import SistemeDistribuite.Monitoring.CommunicationMicroservice.data.entities.Device;
 import SistemeDistribuite.Monitoring.CommunicationMicroservice.data.repositories.DeviceRepository;
 import SistemeDistribuite.Monitoring.CommunicationMicroservice.service.interfaces.DeviceService;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +17,22 @@ public class DeviceServiceImplementation  implements DeviceService {
         this.deviceRepository = deviceRepository;
     }
 
+    @RabbitListener(queues = "${rabbitmq.device.queue}")
+    public void receiveMessage(int id) {
+        if(id>0){
+            create(id);
+        }else{
+            id*=-1;
+            delete(id);
+        }
+    }
+
     @Override
-    public Device createDevice(int id) {
+    public Device create(int id) {
         if (deviceRepository.findById(id).isPresent()) {
             throw new IllegalArgumentException("Device with id " + id + " already exists");
-        } else if (id<1) {
-            throw new IllegalArgumentException("Device with id below 1 is forbidden");
+        } else if (id==0) {
+            throw new IllegalArgumentException("Device with id equals 0 is forbidden");
         }
 
         Device device = new Device();
@@ -31,7 +42,7 @@ public class DeviceServiceImplementation  implements DeviceService {
     }
 
     @Override
-    public void deleteDevice(int id) {
+    public void delete(int id) {
         deviceRepository.deleteById(id);
     }
 }

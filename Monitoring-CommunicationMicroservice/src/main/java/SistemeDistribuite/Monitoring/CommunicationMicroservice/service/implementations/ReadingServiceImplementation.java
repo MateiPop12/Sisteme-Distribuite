@@ -5,17 +5,21 @@ import SistemeDistribuite.Monitoring.CommunicationMicroservice.data.entities.Rea
 import SistemeDistribuite.Monitoring.CommunicationMicroservice.data.repositories.DeviceRepository;
 import SistemeDistribuite.Monitoring.CommunicationMicroservice.data.repositories.ReadingRepository;
 import SistemeDistribuite.Monitoring.CommunicationMicroservice.model.ReadingDto;
+import SistemeDistribuite.Monitoring.CommunicationMicroservice.model.ReceivedReadingDto;
 import SistemeDistribuite.Monitoring.CommunicationMicroservice.service.interfaces.ReadingService;
 import SistemeDistribuite.Monitoring.CommunicationMicroservice.service.mappers.ReadingToReadingDtoMapper;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
 public class ReadingServiceImplementation implements ReadingService {
 
+    private static final Logger LOGGER = Logger.getLogger(ReadingServiceImplementation.class.getName());
     private final ReadingRepository readingRepository;
     private final DeviceRepository deviceRepository;
 
@@ -39,5 +43,16 @@ public class ReadingServiceImplementation implements ReadingService {
         newReading.setMeasurement_value(readingDto.getMeasurement_value());
         newReading.setDevice(device);
         return readingRepository.save(newReading);
+    }
+
+    @RabbitListener(queues = "${rabbitmq.sim.queue}")
+    public void receiveMessage(ReceivedReadingDto receivedReadingDto) {
+        ReadingDto readingDto = new ReadingDto();
+        String timestamp = receivedReadingDto.getTimestamp();
+        readingDto.setTimestamp(receivedReadingDto.convert(timestamp));
+        readingDto.setMeasurement_value(receivedReadingDto.getValue());
+        readingDto.setDeviceId(receivedReadingDto.getDevice_id());
+        LOGGER.info(String.format("Received -> %s", receivedReadingDto));
+        this.create(readingDto);
     }
 }

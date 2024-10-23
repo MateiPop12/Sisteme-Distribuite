@@ -104,7 +104,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let file = File::open(&file_path)?;
     let mut rdr = ReaderBuilder::new().has_headers(false).from_reader(file);
     let mut hourly_increment = 0;
-    let device_id = 8;
+    let device_id = 1;
 
     // Connect to RabbitMQ
     let runtime = runtime::Runtime::new()?;
@@ -148,9 +148,9 @@ fn main() -> Result<(), Box<dyn Error>> {
                     println!("DeviceId: {}", device_id);
                     println!("Reading: {}", value);
                     println!();
-                    hourly_increment += 1;
+                    hourly_increment += 3;
                     // Introduce a 2-second delay
-                    thread::sleep(StdDuration::from_secs(1));
+                    thread::sleep(StdDuration::from_secs(2));
                 }
             }
         }

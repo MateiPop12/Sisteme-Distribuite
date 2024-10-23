@@ -22,11 +22,13 @@ import {DeviceService} from "../../services/device.service";
 export class DeviceCreateCardComponent implements OnInit{
 
   @Input() users!: User[];
-  device: Device = {id:0,name:'',address:'',maxConsumption:0,userId:1};
+  device: Device = {id:0,name:'',address:'',maxConsumption:0,userId:0};
   @Output() deviceCreated = new EventEmitter<void>();
 
   constructor(private deviceService: DeviceService,) {}
-  ngOnInit() {}
+  ngOnInit() {
+    this.device.userId = this.users[0].id;
+  }
 
   createDevice(){
     console.log("Create device",this.device);

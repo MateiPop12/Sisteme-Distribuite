@@ -2,12 +2,12 @@ package SistemeDistribuite.DeviceMicroservice.controller;
 
 import SistemeDistribuite.DeviceMicroservice.data.entities.User;
 import SistemeDistribuite.DeviceMicroservice.service.interfaces.UserService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
@@ -21,6 +21,12 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> all() {
+        logger.info("Get all users");
+        return ResponseEntity.ok(userService.all());
     }
 
     @PostMapping("/create/{id}")

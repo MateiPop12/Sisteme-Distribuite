@@ -24,13 +24,13 @@ public class DeviceController {
     @PostMapping("/create/{id}")
     public ResponseEntity<Device> create(@PathVariable Integer id) {
         logger.info("Device created");
-        return ResponseEntity.ok(deviceService.createDevice(id));
+        return ResponseEntity.ok(deviceService.create(id));
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Device> delete(@PathVariable Integer id) {
         logger.info("Device deleted");
-        deviceService.deleteDevice(id);
+        deviceService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

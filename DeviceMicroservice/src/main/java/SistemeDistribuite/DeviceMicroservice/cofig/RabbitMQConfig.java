@@ -1,9 +1,6 @@
 package SistemeDistribuite.DeviceMicroservice.cofig;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     @Value("${rabbitmq.exchange}")
-    private String EXCHANGE_NAME;
+    private String EXCHANGE;
 
     @Value("${rabbitmq.user.queue}")
     private String USER_QUEUE_NAME;
@@ -26,7 +23,7 @@ public class RabbitMQConfig {
 
     @Bean
     public TopicExchange Exchange() {
-        return new TopicExchange(EXCHANGE_NAME);
+        return new TopicExchange(EXCHANGE);
     }
 
     @Bean
