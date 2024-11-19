@@ -104,7 +104,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let file = File::open(&file_path)?;
     let mut rdr = ReaderBuilder::new().has_headers(false).from_reader(file);
     let mut hourly_increment = 0;
-    let device_id = 1;
+    let device_id = 2;
 
     // Connect to RabbitMQ
     let runtime = runtime::Runtime::new()?;

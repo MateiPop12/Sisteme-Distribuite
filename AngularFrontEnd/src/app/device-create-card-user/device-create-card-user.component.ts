@@ -11,7 +11,6 @@ import {UserService} from "../../services/user.service";
   standalone: true,
   imports: [
     FormsModule,
-    NgForOf,
     ReactiveFormsModule
   ],
   templateUrl: './device-create-card-user.component.html',

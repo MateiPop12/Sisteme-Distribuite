@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {User} from "../../models/user";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {RoleSelectorComponent} from "../role-selector/role-selector.component";
 import {Device} from "../../models/device";
 import {NgForOf} from "@angular/common";
 import {DeviceService} from "../../services/device.service";
@@ -13,7 +12,6 @@ import {DeviceService} from "../../services/device.service";
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    RoleSelectorComponent,
     NgForOf
   ],
   templateUrl: './device-create-card.component.html',

@@ -4,4 +4,8 @@
   <input type="number" placeholder="maxConsumption" [(ngModel)]="device.maxConsumption" name="maxConsumption">
   <button (click)="updateDevice()">Update</button>
   <button (click)="deleteDevice()">Delete</button>
+  <button (click)="showChart()">Chart</button>
 </form>
+<div *ngIf="showChartToggle">
+  <chart [readings]="chartData"></chart>
+</div>

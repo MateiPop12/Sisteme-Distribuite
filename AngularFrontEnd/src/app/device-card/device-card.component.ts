@@ -1,10 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {User} from "../../models/user";
 import {Device} from "../../models/device";
 import {DeviceService} from "../../services/device.service";
-import {Role} from "../../models/role";
+import {ChartComponent} from "../chart/chart.component";
+import {Reading} from "../../models/reading";
+import {MonitorService} from "../../services/monitor.service";
 
 @Component({
   selector: 'device-card',
@@ -12,7 +14,9 @@ import {Role} from "../../models/role";
   imports: [
     NgForOf,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    ChartComponent,
+    NgIf
   ],
   templateUrl: './device-card.component.html',
   styleUrl: './device-card.component.css'
@@ -22,8 +26,11 @@ export class DeviceCardComponent implements OnInit{
   @Input() device! : Device;
   selectedUser!: User | undefined;
   @Output() updateList= new EventEmitter<void>();
+  showChartToggle : boolean = false;
+  chartData : Reading[] = [];
 
-  constructor(private deviceService: DeviceService) {}
+  constructor(private deviceService: DeviceService,
+              private monitorService: MonitorService) {}
 
   ngOnInit() {
     this.selectedUser=this.users.find(user => user.id === this.device.userId);
@@ -58,4 +65,12 @@ export class DeviceCardComponent implements OnInit{
     );
   }
 
+  showChart() {
+    this.showChartToggle=!this.showChartToggle;
+    this.monitorService.getReadingsByDeviceId(this.device.id).subscribe(
+      data=>this.chartData = data,
+      error=> console.log("Error loading chart data:",error)
+    )
+    console.log(this.chartData);
+  }
 }

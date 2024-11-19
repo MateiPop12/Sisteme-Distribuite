@@ -8,6 +8,7 @@ import SistemeDistribuite.Monitoring.CommunicationMicroservice.model.ReadingDto;
 import SistemeDistribuite.Monitoring.CommunicationMicroservice.model.ReceivedReadingDto;
 import SistemeDistribuite.Monitoring.CommunicationMicroservice.service.interfaces.ReadingService;
 import SistemeDistribuite.Monitoring.CommunicationMicroservice.service.mappers.ReadingToReadingDtoMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,13 +47,20 @@ public class ReadingServiceImplementation implements ReadingService {
     }
 
     @RabbitListener(queues = "${rabbitmq.sim.queue}")
-    public void receiveMessage(ReceivedReadingDto receivedReadingDto) {
-        ReadingDto readingDto = new ReadingDto();
-        String timestamp = receivedReadingDto.getTimestamp();
-        readingDto.setTimestamp(receivedReadingDto.convert(timestamp));
-        readingDto.setMeasurement_value(receivedReadingDto.getValue());
-        readingDto.setDeviceId(receivedReadingDto.getDevice_id());
-        LOGGER.info(String.format("Received -> %s", receivedReadingDto));
-        this.create(readingDto);
+    public void receiveMessage(String rawMessage) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            ReceivedReadingDto receivedReadingDto = objectMapper.readValue(rawMessage, ReceivedReadingDto.class);
+            LOGGER.info("Deserialized DTO: " + receivedReadingDto);
+            ReadingDto readingDto = new ReadingDto();
+            String timestamp = receivedReadingDto.getTimestamp();
+            readingDto.setTimestamp(receivedReadingDto.convert(timestamp));
+            readingDto.setMeasurement_value(receivedReadingDto.getValue());
+            readingDto.setDeviceId(receivedReadingDto.getDevice_id());
+            LOGGER.info(String.format("Received -> %s", receivedReadingDto));
+            this.create(readingDto);
+        } catch (Exception e) {
+            LOGGER.severe("Failed to deserialize: " + e.getMessage());
+        }
     }
 }
