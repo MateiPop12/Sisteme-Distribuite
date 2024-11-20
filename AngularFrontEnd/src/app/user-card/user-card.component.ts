@@ -4,6 +4,8 @@ import {RoleSelectorComponent} from "../role-selector/role-selector.component";
 import {User} from "../../models/user";
 import {UserService} from "../../services/user.service";
 import {Role} from "../../models/role";
+import {NgIf} from "@angular/common";
+import {ChatBoxComponent} from "../chat-box/chat-box.component";
 
 @Component({
   selector: 'user-card',
@@ -11,7 +13,9 @@ import {Role} from "../../models/role";
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    RoleSelectorComponent
+    RoleSelectorComponent,
+    NgIf,
+    ChatBoxComponent
   ],
   templateUrl: './user-card.component.html',
   styleUrl: './user-card.component.css'
@@ -22,6 +26,7 @@ export class UserCardComponent implements OnInit{
   @Input() roles!: Role[];
   @Output() selectedRole: Role | null = null;
   @Output() userListUpdated = new EventEmitter<void>();
+  isVisible : boolean = false;
 
   constructor(private userService: UserService) {}
 
@@ -58,5 +63,9 @@ export class UserCardComponent implements OnInit{
         console.error('Error deleted user:', error);
       }
     );
+  }
+
+  showChatBox() {
+    this.isVisible = !this.isVisible;
   }
 }
