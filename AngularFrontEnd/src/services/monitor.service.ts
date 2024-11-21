@@ -8,7 +8,8 @@ import {Reading} from "../models/reading";
 })
 export class MonitorService {
 
-  private baseUrl = 'http://localhost:8082/reading';
+  private baseUrl = 'http://monitoring.localhost/reading';
+  // private baseUrl = 'http://localhost:8082/reading';
 
   constructor(private http: HttpClient) { }
 

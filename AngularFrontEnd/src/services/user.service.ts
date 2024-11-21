@@ -11,7 +11,8 @@ import {CreateUser} from "../models/create-user";
 })
 export class UserService {
 
-  private baseUrl = 'http://localhost:8080/user';
+  private baseUrl = 'http://users.localhost/user';
+  // private baseUrl = 'http://localhost:8080/user';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

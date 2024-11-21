@@ -1,3 +1,133 @@
+#services:
+#  traefik:
+#    image: traefik:v3.2
+#    command:
+#      - "--api.insecure=true"
+#      - "--providers.docker=true"
+#      - "--entrypoints.web.address=:80"
+#    ports:
+#      - "80:80"
+#      - "8083:8083"
+#    volumes:
+#      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+#    networks:
+#      - my_network
+#
+#  frontend:
+#    build: D:\FACULTATE\Anul_IV\SD\AngularFrontEnd
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.frontend.rule=Host(`frontend.localhost`)"
+#      - "traefik.http.services.frontend.loadbalancer.server.port=4200"
+#    ports:
+#      - "4200:4200"
+#    networks:
+#      - my_network
+#
+#  users-service:
+#    build: D:\FACULTATE\Anul_IV\SD\UserMicroservice
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.users-service.rule=Host(`users.localhost`)"
+#      - "traefik.http.services.users-service.loadbalancer.server.port=8080"
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - my_network
+#    environment:
+#      POSTGRES_HOST: user_db
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: postgresServer1
+#    depends_on:
+#      - user_db
+#
+#  devices-service:
+#    build: D:\FACULTATE\Anul_IV\SD\DeviceMicroservice
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.devices-service.rule=Host(`devices.localhost`)"
+#      - "traefik.http.services.devices-service.loadbalancer.server.port=8081"
+#    ports:
+#      - "8081:8081"
+#    networks:
+#      - my_network
+#    environment:
+#      POSTGRES_HOST: device_db
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: postgresServer1
+#    depends_on:
+#      - device_db
+#
+#  monitoring-service:
+#    build: D:\FACULTATE\Anul_IV\SD\Monitoring-CommunicationMicroservice
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.monitoring-service.rule=Host(`monitoring.localhost`)"
+#      - "traefik.http.services.users-service.loadbalancer.server.port=8082"
+#    ports:
+#      - "8082:8082"
+#    networks:
+#      - my_network
+#    environment:
+#      POSTGRES_HOST: monitoring_db
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: postgresServer1
+#    depends_on:
+#      - monitoring_db
+#
+#  rabbitmq:
+#    image: rabbitmq:3.13.7-management
+#    ports:
+#      - "15672:15672"
+#      - "5672:5672"
+#    networks:
+#      - my_network
+#
+#  user_db:
+#    image: postgres:latest
+#    environment:
+#      POSTGRES_PASSWORD: postgresServer1
+#      POSTGRES_DB: user_db
+#    volumes:
+#      - user_db-data:/var/lib/postgresql/data
+#    ports:
+#      - "5432:5432"
+#    networks:
+#      - my_network
+#
+#  device_db:
+#    image: postgres:latest
+#    environment:
+#      POSTGRES_PASSWORD: postgresServer1
+#      POSTGRES_DB: device_db
+#    volumes:
+#      - device_db-data:/var/lib/postgresql/data
+#    ports:
+#      - "5433:5432"
+#    networks:
+#      - my_network
+#
+#  monitoring_db:
+#    image: postgres:latest
+#    environment:
+#      POSTGRES_PASSWORD: postgresServer1
+#      POSTGRES_DB: monitoring_db
+#    volumes:
+#      - monitoring_db-data:/var/lib/postgresql/data
+#    ports:
+#      - "5434:5432"
+#    networks:
+#      - my_network
+#
+#volumes:
+#  user_db-data:
+#  device_db-data:
+#  monitoring_db-data:
+#
+#networks:
+#  my_network:
+#    driver: bridge
+
 services:
   traefik:
     image: traefik:v3.2
@@ -7,7 +137,7 @@ services:
       - "--entrypoints.web.address=:80"
     ports:
       - "80:80"
-      - "8083:8083"
+      - "8080:8080" # Traefik dashboard
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
@@ -19,8 +149,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`frontend.localhost`)"
       - "traefik.http.services.frontend.loadbalancer.server.port=4200"
-    ports:
-      - "4200:4200"
     networks:
       - my_network
 
@@ -30,8 +158,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.users-service.rule=Host(`users.localhost`)"
       - "traefik.http.services.users-service.loadbalancer.server.port=8080"
-    ports:
-      - "8080:8080"
     networks:
       - my_network
     environment:
@@ -40,6 +166,12 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgresServer1
     depends_on:
       - user_db
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+      restart_policy:
+        condition: on-failure
 
   devices-service:
     build: D:\FACULTATE\Anul_IV\SD\DeviceMicroservice
@@ -47,8 +179,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.devices-service.rule=Host(`devices.localhost`)"
       - "traefik.http.services.devices-service.loadbalancer.server.port=8081"
-    ports:
-      - "8081:8081"
     networks:
       - my_network
     environment:
@@ -57,15 +187,19 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgresServer1
     depends_on:
       - device_db
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+      restart_policy:
+        condition: on-failure
 
   monitoring-service:
     build: D:\FACULTATE\Anul_IV\SD\Monitoring-CommunicationMicroservice
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.monitoring-service.rule=Host(`monitoring.localhost`)"
-      - "traefik.http.services.users-service.loadbalancer.server.port=8082"
-    ports:
-      - "8082:8082"
+      - "traefik.http.services.monitoring-service.loadbalancer.server.port=8082"
     networks:
       - my_network
     environment:
@@ -74,6 +208,12 @@ services:
       SPRING_DATASOURCE_PASSWORD: postgresServer1
     depends_on:
       - monitoring_db
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+      restart_policy:
+        condition: on-failure
 
   rabbitmq:
     image: rabbitmq:3.13.7-management

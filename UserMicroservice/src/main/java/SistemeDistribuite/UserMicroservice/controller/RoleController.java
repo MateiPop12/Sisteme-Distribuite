@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/role")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://frontend.localhost"})
 public class RoleController {
     private final Logger logger = Logger.getLogger(RoleController.class.getName());
     private final RoleService roleService;

@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://frontend.localhost"})
 public class AuthenticationController {
 
     private final Logger logger = Logger.getLogger(AuthenticationController.class.getName());

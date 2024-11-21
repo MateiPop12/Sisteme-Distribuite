@@ -9,7 +9,8 @@ import {RegisterUser} from "../models/registerUser";
 })
 export class AuthService {
 
-  private baseUrl = "http://localhost:8080/auth";
+  private baseUrl = "http://users.localhost/auth";
+  // private baseUrl = "http://localhost:8080/auth";
   private tokenKey = 'authToken'
 
   constructor(private http: HttpClient) { }

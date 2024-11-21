@@ -10,7 +10,8 @@ import {DeviceUser} from "../models/device-user";
 })
 export class DeviceService {
 
-  private baseUrl = 'http://localhost:8081/device';
+  private baseUrl = 'http://devices.localhost/device';
+  // private baseUrl = 'http://localhost:8081/device';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
