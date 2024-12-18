@@ -1,5 +1,9 @@
 <nav-bar></nav-bar>
 <div class="user-view-container">
+  <chat-box
+    [senderName]="user.username"
+    [receiverName]="'Admin'">
+  </chat-box>
   <h1>Device Create</h1>
   <device-create-card-user
   (deviceCreated)="loadDevices()">

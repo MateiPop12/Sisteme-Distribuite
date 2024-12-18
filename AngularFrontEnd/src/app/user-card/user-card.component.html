@@ -11,5 +11,8 @@
   <button type="button" (click)="showChatBox()">Chat</button>
 </form>
 <div *ngIf="isVisible">
-  <chat-box></chat-box>
+  <chat-box
+    [senderName]="'Admin'"
+    [receiverName]="user.username">
+  </chat-box>
 </div>

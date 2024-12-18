@@ -9,6 +9,7 @@ import {DeviceCreateCardUserComponent} from "../device-create-card-user/device-c
 import {DeviceCardComponent} from "../device-card/device-card.component";
 import {NgForOf} from "@angular/common";
 import {DeviceCardUserComponent} from "../device-card-user/device-card-user.component";
+import {ChatBoxComponent} from "../chat-box/chat-box.component";
 
 @Component({
   selector: 'user-view',
@@ -16,9 +17,9 @@ import {DeviceCardUserComponent} from "../device-card-user/device-card-user.comp
   imports: [
     NavBarComponent,
     DeviceCreateCardUserComponent,
-    DeviceCardComponent,
     NgForOf,
-    DeviceCardUserComponent
+    DeviceCardUserComponent,
+    ChatBoxComponent
   ],
   templateUrl: './user-view.component.html',
   styleUrl: './user-view.component.css'

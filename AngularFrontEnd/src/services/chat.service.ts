@@ -8,10 +8,14 @@ import {BehaviorSubject} from "rxjs";
 export class ChatService {
 
   private stompClient: Client | null = null;
-  private messageSubject = new BehaviorSubject<any[]>([]);
-  messages$ = this.messageSubject.asObservable();
+  private publicMessageSubject = new BehaviorSubject<any[]>([]);
+  private privateMessageSubject = new BehaviorSubject<any[]>([]);
 
-  private baseUrl = 'ws://localhost:8084/chat';
+  publicMessages$ = this.publicMessageSubject.asObservable();
+  privateMessages$ = this.privateMessageSubject.asObservable();
+
+  // private baseUrl = 'ws://localhost:8084/chat';
+  private baseUrl = 'ws://chat.localhost/chat';
 
   connect(): void {
     this.stompClient = new Client({
@@ -21,7 +25,12 @@ export class ChatService {
         console.log('Connected to WebSocket');
         this.stompClient?.subscribe('/topic/messages', (message) => {
           const messageBody = JSON.parse(message.body);
-          this.addMessage(messageBody);
+          this.addPublicMessage(messageBody);
+        });
+        this.stompClient?.subscribe('/user/queue/messages', (message) => {
+          const messageBody = JSON.parse(message.body);
+          console.log("Received private message: ", messageBody);
+          this.addPrivateMessage(messageBody);
         });
       },
       onStompError: (frame) => {
@@ -33,7 +42,7 @@ export class ChatService {
     this.stompClient.activate();
   }
 
-  sendMessage(sender: string, content: string): void {
+  sendPublicMessage(sender: string, content: string): void {
     if (this.stompClient?.connected) {
       const message = { sender, content, type: 'CHAT' };
       this.stompClient.publish({
@@ -43,9 +52,26 @@ export class ChatService {
     }
   }
 
-  private addMessage(message: any): void {
-    const currentMessages = this.messageSubject.value;
-    this.messageSubject.next([...currentMessages, message]);
+  sendPrivateMessage(sender: string, receiver: string, content: string): void {
+    if (this.stompClient?.connected) {
+      const message = { sender, receiver, content, type: 'CHAT' };
+      this.stompClient.publish({
+        destination: '/app/privateMessage',
+        body: JSON.stringify(message),
+      });
+      console.log(JSON.stringify(message));
+    }
+  }
+
+  private addPublicMessage(message: any): void {
+    const currentMessages = this.publicMessageSubject.value;
+    this.publicMessageSubject.next([...currentMessages, message]);
+  }
+
+  private addPrivateMessage(message: any): void {
+    console.log("Adding private message: ", message);
+    const currentMessages = this.privateMessageSubject.value;
+    this.privateMessageSubject.next([...currentMessages, message]);
   }
 
   disconnect(): void {

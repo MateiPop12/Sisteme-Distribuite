@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {NgForOf} from "@angular/common";
 import {ChatService} from "../../services/chat.service";
 import {FormsModule} from "@angular/forms";
@@ -17,20 +17,23 @@ export class ChatBoxComponent implements OnInit,OnDestroy {
 
   messages: any[] = [];
   messageInput = '';
-  senderName = 'User'; // Customize or fetch dynamically
+  @Input() senderName = '';
+  @Input() receiverName = '';
 
   constructor(private chatService: ChatService) {}
 
   ngOnInit(): void {
     this.chatService.connect();
-    this.chatService.messages$.subscribe((messages) => {
+    this.chatService.publicMessages$.subscribe((messages) => {
+      console.log("Updated public messages: ", messages);
       this.messages = messages;
     });
   }
 
   sendMessage(): void {
-    if (this.messageInput.trim()) {
-      this.chatService.sendMessage(this.senderName, this.messageInput);
+    if (this.messageInput.trim() && this.receiverName.trim()) {
+      this.chatService.sendPublicMessage(this.senderName,this.messageInput);
+      console.log(this.messages);
       this.messageInput = '';
     }
   }
